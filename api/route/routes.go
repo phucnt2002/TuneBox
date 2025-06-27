@@ -14,7 +14,7 @@ type Route struct {
 
 func SetupRoutes(r *Route) *http.ServeMux {
 	mux := http.NewServeMux()
-	repo := repository.NewInMemoryRepository()
+	repo := repository.NewGroupRepository()
 	wsController := controller.NewWebSocketController(repo)
 	youtubeController, err := controller.NewYouTubeController(r.Env.YoutubeAPIKey)
 	if err != nil {
@@ -22,6 +22,7 @@ func SetupRoutes(r *Route) *http.ServeMux {
 	}
 
 	mux.HandleFunc("/ws", wsController.HandleConnections)
+	mux.HandleFunc("/{groupName}", wsController.HandleConnections)
 	mux.HandleFunc("/search", youtubeController.SearchSongs)
 	mux.Handle("/", http.FileServer(http.Dir("./client/dist")))
 	return mux

@@ -40,7 +40,7 @@ func (c *YoutubeController) SearchSongs(w http.ResponseWriter, r *http.Request) 
 	for _, item := range resp.Items {
 		result = append(result, domain.Song{
 			Title:   item.Snippet.Title,
-			VideoId: item.Id.VideoId,
+			VideoID: item.Id.VideoId,
 		})
 	}
 
